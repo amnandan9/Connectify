@@ -14,7 +14,7 @@ def inbox(request):
 def chat(request, user_id):
     other_user = get_object_or_404(User, id=user_id)
 
-    messages = Message.objects.filter(
+    chat_messages = Message.objects.filter(
         sender__in=[request.user, other_user],
         receiver__in=[request.user, other_user]
     ).order_by('created_at')
@@ -32,6 +32,6 @@ def chat(request, user_id):
         return redirect('chat', user_id=user_id)
 
     return render(request, 'chat.html', {
-        'messages': messages,
+        'chat_messages': chat_messages,
         'other_user': other_user
     })

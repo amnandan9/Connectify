@@ -28,7 +28,7 @@
 
             <!-- 🔹 Chat Area -->
             <div class="chat-box" id="chat-box">
-                {% for msg in messages %}
+                {% for msg in chat_messages %}
                     {% if msg.sender == user %}
                         <!-- YOUR MESSAGE -->
                         <div class="chat-bubble sent shadow-sm">
