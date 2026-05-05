@@ -44,4 +44,25 @@ def apply_job(request, job_id):
         messages.success(request, "Application submitted!")
 
     return redirect('job_list')
+@login_required
+def create_job(request):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+        location = request.POST.get('location')
+        salary = request.POST.get('salary')
 
+        if title and description and location and salary:
+            Job.objects.create(
+                user=request.user,
+                title=title,
+                description=description,
+                location=location,
+                salary=salary
+            )
+            messages.success(request, "Job posted successfully!")
+            return redirect('job_list')
+        else:
+            messages.error(request, "Please fill in all fields.")
+    
+    return render(request, 'create_job.html')
