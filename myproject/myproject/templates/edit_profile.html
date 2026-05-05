@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Edit Profile</h2>
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="text" name="skills" value="{{ profile.skills }}" class="form-control mb-2">
+    <textarea name="bio" class="form-control mb-2">{{ profile.bio }}</textarea>
+    <input type="file" name="resume" class="form-control mb-2">
+    <input type="file" name="profile_pic" class="form-control mb-2">
+    <button class="btn btn-success">Save</button>
+</form>
+
+{% endblock %}

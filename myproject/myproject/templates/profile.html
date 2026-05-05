@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Profile</h2>
+
+{% if profile.profile_pic %}
+<img src="{{ profile.profile_pic.url }}" width="120">
+{% endif %}
+
+<p>{{ profile.user.username }}</p>
+<p>{{ profile.bio }}</p>
+<p>{{ profile.skills }}</p>
+
+<div class="card p-4 text-center">
+
+    {% if profile.profile_pic %}
+        <img src="{{ profile.profile_pic.url }}" width="100" class="mb-3 rounded-circle">
+    {% endif %}
+
+    <h4>{{ profile.user.username }}</h4>
+    <p>{{ profile.skills }}</p>
+
+    <a href="{% url 'edit_profile' %}" class="btn btn-warning">Edit Profile</a>
+
+</div>
+
+<br>
+<a href="{% url 'edit_profile' %}" class="btn btn-warning">Edit</a>
+{% endblock %}

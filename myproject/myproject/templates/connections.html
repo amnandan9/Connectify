@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h3 class="mb-3">People</h3>
+
+<div class="row">
+{% for user in users %}
+<div class="col-md-4">
+    <div class="card p-3 mb-3 text-center">
+        <h5>{{ user.username }}</h5>
+
+        <form method="POST" action="{% url 'send_request' user.id %}">
+            {% csrf_token %}
+            <button class="btn btn-primary mt-2">Connect</button>
+        </form>
+    </div>
+</div>
+{% endfor %}
+</div>
+
+{% endblock %}
