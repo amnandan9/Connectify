@@ -2,19 +2,68 @@
 
 {% block content %}
 
-<h2>Feed</h2>
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <!-- 📝 CREATE POST -->
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body p-4">
+                <div class="d-flex gap-3">
+                    <img src="https://ui-avatars.com/api/?name={{ user.username }}&background=10b981&color=fff" class="rounded-circle" style="width: 48px; height: 48px;">
+                    <form method="POST" action="{% url 'create_post' %}" class="w-100">
+                        {% csrf_token %}
+                        <textarea name="content" class="form-control border-0 bg-light mb-3" rows="3" placeholder="What's on your mind, {{ user.username }}?" style="resize: none;"></textarea>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex gap-2">
+                                <button type="button" class="btn btn-light btn-sm text-muted"><i class="fa-solid fa-image me-1"></i> Photo</button>
+                                <button type="button" class="btn btn-light btn-sm text-muted"><i class="fa-solid fa-video me-1"></i> Video</button>
+                            </div>
+                            <button class="btn btn-primary px-4">Post</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
-<form method="POST" action="{% url 'create_post' %}">
-    {% csrf_token %}
-    <textarea name="content" class="form-control mb-2"></textarea>
-    <button class="btn btn-primary">Post</button>
-</form>
-
-{% for post in posts %}
-<div class="card p-3 mt-3">
-    <b>{{ post.user.username }}</b>
-    <p>{{ post.content }}</p>
+        <!-- 📰 POST FEED -->
+        <div class="d-flex flex-column gap-4">
+            {% for post in posts %}
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <img src="https://ui-avatars.com/api/?name={{ post.user.username }}&background=0f172a&color=fff" class="rounded-circle me-3" style="width: 40px; height: 40px;">
+                            <div>
+                                <h6 class="mb-0 fw-700 text-secondary">{{ post.user.username }}</h6>
+                                <span class="text-muted small">{{ post.created_at|timesince }} ago</span>
+                            </div>
+                            <div class="ms-auto">
+                                <button class="btn btn-link text-muted p-0"><i class="fa-solid fa-ellipsis"></i></button>
+                            </div>
+                        </div>
+                        
+                        <p class="card-text mb-4" style="white-space: pre-wrap;">{{ post.content }}</p>
+                        
+                        <div class="d-flex border-top pt-3 gap-4">
+                            <button class="btn btn-link text-muted text-decoration-none p-0 small">
+                                <i class="fa-regular fa-thumbs-up me-1"></i> Like
+                            </button>
+                            <button class="btn btn-link text-muted text-decoration-none p-0 small">
+                                <i class="fa-regular fa-comment me-1"></i> Comment
+                            </button>
+                            <button class="btn btn-link text-muted text-decoration-none p-0 small">
+                                <i class="fa-regular fa-share-from-square me-1"></i> Share
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="text-center py-5 opacity-50">
+                    <i class="fa-solid fa-newspaper fa-4x mb-3"></i>
+                    <h5>Your feed is empty</h5>
+                    <p>Start following people to see their updates here!</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 </div>
-{% endfor %}
 
-{% endblock %}
+{% endblock %}

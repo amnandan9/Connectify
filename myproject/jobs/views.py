@@ -1,5 +1,3 @@
-from urllib import request
-
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -29,8 +27,6 @@ def job_list(request):
         'applied_jobs': applied_jobs
     })
 
-from notifications.models import Notification
-
 @login_required
 def apply_job(request, job_id):
     job = get_object_or_404(Job, id=job_id)
@@ -40,7 +36,6 @@ def apply_job(request, job_id):
     else:
         Application.objects.create(user=request.user, job=job)
 
-        # ✅ CORRECT PLACE
         Notification.objects.create(
             user=job.user,
             message=f"{request.user.username} applied to your job"

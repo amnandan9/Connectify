@@ -2,39 +2,76 @@
 
 {% block content %}
 
-<h3 class="mb-4">Explore Jobs</h3>
-
-<form method="GET" class="row mb-4">
-    <div class="col-md-5">
-        <input type="text" name="q" class="form-control" placeholder="Search jobs">
-    </div>
-    <div class="col-md-5">
-        <input type="text" name="location" class="form-control" placeholder="Location">
-    </div>
-    <div class="col-md-2">
-        <button class="btn btn-primary w-100">Search</button>
-    </div>
-</form>
-
-{% for job in jobs %}
-<div class="card p-4 mb-3">
-
-    <h5>{{ job.title }}</h5>
-    <p class="text-muted">{{ job.location }}</p>
-    <p>{{ job.description|truncatewords:20 }}</p>
-
-    <div class="mt-2">
-        {% if job.id in applied_jobs %}
-            <button class="btn btn-secondary" disabled>Applied</button>
-        {% else %}
-            <form method="POST" action="{% url 'apply_job' job.id %}">
-                {% csrf_token %}
-                <button class="btn btn-success">Apply</button>
-            </form>
-        {% endif %}
+<div class="row">
+    <!-- 🔍 SEARCH FILTERS -->
+    <div class="col-lg-4 mb-4">
+        <div class="card shadow-sm border-0 sticky-top" style="top: 100px;">
+            <div class="card-header bg-white border-bottom py-3">
+                <h5 class="mb-0"><i class="fa-solid fa-magnifying-glass me-2 text-primary"></i>Find Jobs</h5>
+            </div>
+            <div class="card-body p-4">
+                <form method="GET">
+                    <div class="mb-3">
+                        <label class="form-label fw-600 small text-uppercase tracking-wider">Job Title</label>
+                        <input type="text" name="q" class="form-control" placeholder="e.g. Software Engineer" value="{{ request.GET.q }}">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-600 small text-uppercase tracking-wider">Location</label>
+                        <input type="text" name="location" class="form-control" placeholder="e.g. Remote" value="{{ request.GET.location }}">
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Search Jobs</button>
+                    {% if request.GET.q or request.GET.location %}
+                        <a href="{% url 'job_list' %}" class="btn btn-link w-100 mt-2 small text-muted text-decoration-none">Clear Filters</a>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
     </div>
 
+    <!-- 💼 JOB LIST -->
+    <div class="col-lg-8">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="mb-0 fw-800">{{ jobs.count }} Opportunities Found</h4>
+        </div>
+
+        {% for job in jobs %}
+            <div class="card mb-4 border-0 shadow-sm overflow-hidden">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h5 class="card-title mb-1 fw-700 text-secondary">{{ job.title }}</h5>
+                            <p class="text-muted small mb-3"><i class="fa-solid fa-location-dot me-1"></i> {{ job.location }}</p>
+                            
+                            <div class="badge bg-light text-secondary rounded-pill px-3 py-2 mb-3">
+                                <i class="fa-solid fa-coins me-1"></i> ${{ job.salary|default:"80,000" }} / year
+                            </div>
+                        </div>
+                        <img src="https://ui-avatars.com/api/?name={{ job.title }}&background=f1f5f9&color=10b981&bold=true" class="rounded-3" style="width: 56px; height: 56px;" alt="Job Avatar">
+                    </div>
+                    
+                    <p class="card-text text-muted mb-4">{{ job.description|truncatewords:30 }}</p>
+                    
+                    <div class="d-flex gap-2">
+                        {% if job.id in applied_jobs %}
+                            <button class="btn btn-light text-muted w-100" disabled>
+                                <i class="fa-solid fa-check-circle me-2"></i>Applied
+                            </button>
+                        {% else %}
+                            <a href="{% url 'apply_job' job.id %}" class="btn btn-primary w-100">Apply Now</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="text-center py-5">
+                <div class="mb-3 text-muted opacity-50">
+                    <i class="fa-solid fa-briefcase fa-4x"></i>
+                </div>
+                <h5>No jobs found matching your criteria</h5>
+                <p class="text-muted">Try adjusting your filters or search terms</p>
+            </div>
+        {% endfor %}
+    </div>
 </div>
-{% endfor %}
 
-{% endblock %}
+{% endblock %}

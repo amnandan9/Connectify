@@ -1,190 +1,238 @@
-/* 🌍 GLOBAL */
+:root {
+    --primary: #10b981;
+    --primary-hover: #059669;
+    --secondary: #0f172a;
+    --bg: #f8fafc;
+    --card-bg: #ffffff;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+    --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
 body {
-    background-color: #f3f2ef;
-    font-family: 'Segoe UI', sans-serif;
-    margin: 0;
-    padding: 0;
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    line-height: 1.5;
 }
 
 /* 🔝 NAVBAR */
 .navbar {
-    box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
+    background-color: var(--secondary) !important;
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* 📦 CONTAINER */
-.container {
-    max-width: 900px;
+.navbar-brand {
+    font-weight: 800;
+    font-size: 1.5rem;
+    letter-spacing: -0.025em;
+    color: var(--primary) !important;
 }
 
-/* 📇 CARDS */
+.nav-link {
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.8) !important;
+    transition: color 0.2s;
+}
+
+.nav-link:hover {
+    color: var(--primary) !important;
+}
+
+/* 📦 CARDS */
 .card {
-    border-radius: 12px;
-    border: none;
-    box-shadow: 0px 2px 8px rgba(0,0,0,0.08);
-    transition: 0.2s;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    box-shadow: var(--shadow);
+    transition: transform 0.2s, box-shadow 0.2s;
+    overflow: hidden;
 }
 
 .card:hover {
-    transform: translateY(-3px);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.card-header {
+    background: transparent;
+    border-bottom: 1px solid var(--border);
+    padding: 1.25rem;
+    font-weight: 600;
 }
 
 /* 🔘 BUTTONS */
 .btn {
-    border-radius: 20px;
-}
-
-/* 🔍 INPUTS */
-input, textarea {
-    border-radius: 8px !important;
-}
-
-/* 🧾 TEXT */
-h2, h3, h4, h5 {
+    padding: 0.625rem 1.25rem;
+    border-radius: 0.75rem;
     font-weight: 600;
+    transition: all 0.2s;
 }
 
-/* MAIN CONTAINER */
+.btn-primary {
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+    border-color: var(--primary-hover);
+    transform: scale(1.02);
+}
+
+.btn-outline-primary {
+    color: var(--primary);
+    border-color: var(--primary);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary);
+    color: white;
+}
+
+/* 🔍 FORMS */
+.form-control {
+    padding: 0.75rem 1rem;
+    border-radius: 0.75rem;
+    border: 1px solid var(--border);
+    background-color: #ffffff;
+}
+
+.form-control:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+}
+
+/* 💬 CHAT INTERFACE */
 .chat-container {
-    max-width: 700px;
-}
-
-/* HEADER */
-.chat-header {
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-    background: white;
-}
-
-/* CHAT BOX */
-.chat-box {
-    height: 500px;
-    overflow-y: auto;
-    padding: 15px;
-    background: #fafafa;
-}
-
-/* ROW ALIGNMENT */
-.chat-row {
+    max-width: 800px;
+    height: 600px;
     display: flex;
-    margin-bottom: 8px;
+    flex-direction: column;
+    background: white;
+    border-radius: 1rem;
+    box-shadow: var(--shadow-lg);
 }
 
-.chat-row.right {
-    justify-content: flex-end;
-}
-
-.chat-row.left {
-    align-items: flex-end;
-}
-
-/* AVATAR */
-.chat-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-}
-
-.chat-avatar-small {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    margin-right: 8px;
-}
-
-/* BUBBLES */
-.chat-bubble {
-    max-width: 60%;
-    padding: 8px 12px;
-    border-radius: 16px;
-    font-size: 14px;
-    position: relative;
-}
-
-/* YOUR MESSAGE */
-.chat-bubble.sent {
-    background: #3797f0;
-    color: white;
-    border-bottom-right-radius: 4px;
-}
-
-/* OTHER MESSAGE */
-.chat-bubble.received {
-    background: #efefef;
-    color: black;
-    border-bottom-left-radius: 4px;
-}
-
-/* TIME */
-.chat-time {
-    font-size: 10px;
-    margin-top: 3px;
-    opacity: 0.6;
-}
-
-/* INPUT BAR */
-.chat-input {
-    border-top: 1px solid #ddd;
-    padding: 10px;
+.chat-header {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
     background: white;
 }
 
-.chat-input input {
+.chat-box {
     flex: 1;
-    border: none;
-    outline: none;
-    background: #efefef;
-    border-radius: 20px;
-    padding: 8px 12px;
+    overflow-y: auto;
+    padding: 1.5rem;
+    background: #f1f5f9;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
-.chat-input button {
-    border: none;
-    background: #3797f0;
+.chat-bubble {
+    max-width: 70%;
+    padding: 0.75rem 1rem;
+    border-radius: 1.25rem;
+    font-size: 0.9375rem;
+    line-height: 1.4;
+}
+
+.chat-bubble.sent {
+    align-self: flex-end;
+    background: var(--primary);
     color: white;
-    border-radius: 20px;
-    padding: 6px 14px;
-    margin-left: 10px;
+    border-bottom-right-radius: 0.25rem;
 }
 
-/* ========================= */
-/* 💼 JOB CARDS */
-/* ========================= */
-
-.job-card {
-    padding: 15px;
-    margin-bottom: 15px;
+.chat-bubble.received {
+    align-self: flex-start;
+    background: white;
+    color: var(--text);
+    border-bottom-left-radius: 0.25rem;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
 
-/* ========================= */
-/* 👤 PROFILE */
-/* ========================= */
-
-.profile-card {
-    text-align: center;
+.chat-time {
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+    opacity: 0.7;
 }
 
-.profile-card img {
-    border-radius: 50%;
+.chat-input-area {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--border);
+    background: white;
 }
 
-/* ========================= */
+/* 💼 JOB ITEMS */
+.job-item {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.job-item:last-child {
+    border-bottom: none;
+}
+
+.job-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--secondary);
+}
+
+.job-meta {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.25rem;
+}
+
 /* 🔔 NOTIFICATIONS */
-/* ========================= */
-
-.notification-card {
-    padding: 10px;
+.notification-item {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: background 0.2s;
 }
 
-/* ========================= */
+.notification-item:hover {
+    background: #f8fafc;
+}
+
+.notification-item.unread {
+    background: #ecfdf5;
+}
+
+/* 👤 PROFILE */
+.profile-header {
+    text-align: center;
+    padding: 3rem 1rem;
+    background: var(--secondary);
+    color: white;
+    border-radius: 1rem 1rem 0 0;
+}
+
+.profile-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 4px solid white;
+    margin-top: -60px;
+    background: white;
+}
+
 /* 📱 RESPONSIVE */
-/* ========================= */
-
-@media (max-width: 768px) {
-    .container {
-        padding: 10px;
-    }
-
+@media (max-width: 640px) {
     .chat-bubble {
-        max-width: 80%;
+        max-width: 85%;
     }
-}
+}

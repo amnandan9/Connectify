@@ -2,21 +2,80 @@
 
 {% block content %}
 
-<h3 class="mb-3">People</h3>
-
 <div class="row">
-{% for user in users %}
-<div class="col-md-4">
-    <div class="card p-3 mb-3 text-center">
-        <h5>{{ user.username }}</h5>
+    <!-- 📨 PENDING REQUESTS -->
+    {% if received_requests %}
+    <div class="col-lg-12 mb-5">
+        <h4 class="fw-800 mb-4 text-secondary"><i class="fa-solid fa-envelope-open-text me-2 text-primary"></i>Pending Invitations</h4>
+        <div class="row">
+            {% for req in received_requests %}
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-body p-4 text-center">
+                            <img src="https://ui-avatars.com/api/?name={{ req.sender.username }}&background=10b981&color=fff" class="rounded-circle mb-3" style="width: 64px; height: 64px;">
+                            <h6 class="fw-700 mb-1">{{ req.sender.username }}</h6>
+                            <p class="text-muted small mb-4">Wants to connect with you</p>
+                            <div class="d-grid gap-2">
+                                <a href="{% url 'accept_request' req.id %}" class="btn btn-primary btn-sm">Accept Request</a>
+                                <button class="btn btn-light btn-sm">Ignore</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
 
-        <form method="POST" action="{% url 'send_request' user.id %}">
-            {% csrf_token %}
-            <button class="btn btn-primary mt-2">Connect</button>
-        </form>
+    <!-- 🔍 DISCOVER PEOPLE -->
+    <div class="col-lg-8">
+        <h4 class="fw-800 mb-4 text-secondary"><i class="fa-solid fa-user-plus me-2 text-primary"></i>Discover People</h4>
+        <div class="row">
+            {% for person in users %}
+                <div class="col-md-6">
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-center mb-4">
+                                <img src="https://ui-avatars.com/api/?name={{ person.username }}&background=f1f5f9&color=0f172a" class="rounded-circle me-3" style="width: 56px; height: 56px;">
+                                <div class="overflow-hidden">
+                                    <h6 class="mb-0 fw-700 text-truncate">{{ person.username }}</h6>
+                                    <p class="text-muted small mb-0">Professional Member</p>
+                                </div>
+                            </div>
+                            <form method="POST" action="{% url 'send_request' person.id %}">
+                                {% csrf_token %}
+                                <button class="btn btn-outline-primary w-100 btn-sm fw-600">
+                                    <i class="fa-solid fa-plus me-1"></i> Connect
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- 🔗 MY NETWORK SUMMARY -->
+    <div class="col-lg-4">
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-white py-3">
+                <h5 class="mb-0 fw-700 text-secondary">My Network</h5>
+            </div>
+            <div class="card-body p-4 text-center">
+                <div class="display-4 fw-800 text-primary mb-2">{{ my_connections.count|default:"0" }}</div>
+                <p class="text-muted mb-4">Total Connections</p>
+                <hr class="my-4 opacity-50">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-muted small">Sent Requests</span>
+                    <span class="badge bg-light text-secondary rounded-pill">{{ sent_requests.count }}</span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="text-muted small">Pending Requests</span>
+                    <span class="badge bg-light text-secondary rounded-pill">{{ received_requests.count }}</span>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-{% endfor %}
-</div>
 
-{% endblock %}
+{% endblock %}

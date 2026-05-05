@@ -1,28 +1,64 @@
 {% extends 'base.html' %}
+
 {% block content %}
-<h2>Profile</h2>
 
-{% if profile.profile_pic %}
-<img src="{{ profile.profile_pic.url }}" width="120">
-{% endif %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm overflow-hidden">
+            <!-- 👤 Header -->
+            <div class="profile-header">
+                <h2 class="fw-800">{{ profile.user.username }}</h2>
+                <p class="opacity-75 mb-0">Professional Member</p>
+            </div>
+            
+            <div class="card-body p-5 pt-0 text-center">
+                <img src="{% if profile.profile_pic %}{{ profile.profile_pic.url }}{% else %}https://ui-avatars.com/api/?name={{ profile.user.username }}&background=10b981&color=fff&size=128{% endif %}" class="profile-avatar mb-4 shadow-sm" alt="Profile Picture">
+                
+                <h3 class="fw-700 text-secondary mb-1">{{ profile.user.get_full_name|default:profile.user.username }}</h3>
+                <p class="text-muted mb-4">{{ profile.skills|default:"No skills listed yet" }}</p>
 
-<p>{{ profile.user.username }}</p>
-<p>{{ profile.bio }}</p>
-<p>{{ profile.skills }}</p>
+                <div class="d-flex justify-content-center gap-2 mb-5">
+                    <a href="{% url 'edit_profile' %}" class="btn btn-primary px-4">
+                        <i class="fa-solid fa-pen-to-square me-2"></i>Edit Profile
+                    </a>
+                    {% if profile.resume %}
+                        <a href="{{ profile.resume.url }}" class="btn btn-outline-primary px-4" target="_blank">
+                            <i class="fa-solid fa-file-pdf me-2"></i>View Resume
+                        </a>
+                    {% endif %}
+                </div>
 
-<div class="card p-4 text-center">
+                <div class="row text-start mt-4">
+                    <div class="col-12">
+                        <h5 class="fw-700 border-bottom pb-2 mb-3">About Me</h5>
+                        <p class="text-muted lh-lg">
+                            {{ profile.bio|default:"No bio provided yet. Tell the world about yourself!" }}
+                        </p>
+                    </div>
+                </div>
 
-    {% if profile.profile_pic %}
-        <img src="{{ profile.profile_pic.url }}" width="100" class="mb-3 rounded-circle">
-    {% endif %}
-
-    <h4>{{ profile.user.username }}</h4>
-    <p>{{ profile.skills }}</p>
-
-    <a href="{% url 'edit_profile' %}" class="btn btn-warning">Edit Profile</a>
-
+                <div class="row text-start mt-4">
+                    <div class="col-12">
+                        <h5 class="fw-700 border-bottom pb-2 mb-3">Account Information</h5>
+                        <div class="d-flex flex-wrap gap-4 mt-2">
+                            <div>
+                                <span class="text-muted small d-block">Username</span>
+                                <span class="fw-600">{{ profile.user.username }}</span>
+                            </div>
+                            <div>
+                                <span class="text-muted small d-block">Member Since</span>
+                                <span class="fw-600">{{ profile.user.date_joined|date:"M Y" }}</span>
+                            </div>
+                            <div>
+                                <span class="text-muted small d-block">Email</span>
+                                <span class="fw-600">{{ profile.user.email|default:"Not provided" }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<br>
-<a href="{% url 'edit_profile' %}" class="btn btn-warning">Edit</a>
-{% endblock %}
+{% endblock %}
