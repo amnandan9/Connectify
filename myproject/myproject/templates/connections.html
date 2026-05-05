@@ -42,12 +42,17 @@
                                     <p class="text-muted small mb-0">Professional Member</p>
                                 </div>
                             </div>
-                            <form method="POST" action="{% url 'send_request' person.id %}">
-                                {% csrf_token %}
-                                <button class="btn btn-outline-primary w-100 btn-sm fw-600">
-                                    <i class="fa-solid fa-plus me-1"></i> Connect
-                                </button>
-                            </form>
+                            <div class="d-grid gap-2">
+                                <form method="POST" action="{% url 'send_request' person.id %}">
+                                    {% csrf_token %}
+                                    <button class="btn btn-outline-primary w-100 btn-sm fw-600">
+                                        <i class="fa-solid fa-plus me-1"></i> Connect
+                                    </button>
+                                </form>
+                                <a href="{% url 'chat' person.id %}" class="btn btn-light w-100 btn-sm fw-600">
+                                    <i class="fa-solid fa-message me-1"></i> Message
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
