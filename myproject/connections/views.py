@@ -40,9 +40,20 @@ def accept_request(request, request_id):
 
 @login_required
 def connection_list(request):
-    users = User.objects.exclude(id=request.user.id)
+    # Get all users I'm connected with (sent or received)
+    connected_ids = Connection.objects.filter(
+        Q(sender=request.user) | Q(receiver=request.user)
+    ).values_list('sender_id', 'receiver_id')
+    
+    # Flatten the list of IDs and remove self
+    exclude_ids = {request.user.id}
+    for s, r in connected_ids:
+        exclude_ids.add(s)
+        exclude_ids.add(r)
+    
+    users = User.objects.exclude(id__in=exclude_ids)
 
-    sent_requests = Connection.objects.filter(sender=request.user)
+    sent_requests = Connection.objects.filter(sender=request.user, accepted=False)
     received_requests = Connection.objects.filter(receiver=request.user, accepted=False)
     my_connections = Connection.objects.filter(
         Q(sender=request.user, accepted=True) |

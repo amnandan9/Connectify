@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from .models import Message
+from notifications.models import Notification
 
 
 @login_required
@@ -27,6 +28,12 @@ def chat(request, user_id):
                 sender=request.user,
                 receiver=other_user,
                 text=text
+            )
+            
+            # 🔔 Notify receiver
+            Notification.objects.create(
+                user=other_user,
+                message=f"New message from {request.user.username}"
             )
 
         return redirect('chat', user_id=user_id)
